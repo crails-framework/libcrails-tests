@@ -1,0 +1,11 @@
+: 1
+name: libcrails-tests
+version: 2.0.0 
+summary: tests helpers for the crails framework
+license: BSD-C3
+description-file: README.md
+url: https://github.com/crails-framework/libcrails-tests
+email: michael@unetresgrossebite.com
+depends: * build2 >= 0.15.0
+depends: * bpkg >= 0.15.0
+depends: { libcrails libcrails-action } ^2.0.0
