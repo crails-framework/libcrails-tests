@@ -1,6 +1,6 @@
 $out_root/
 {
-  include crails/tests/
+  include libcrails-tests/
 }
 
-export $out_root/libcrails-tests/$import.target
+export $out_root/crails/tests/$import.target
