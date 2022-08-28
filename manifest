@@ -2,7 +2,7 @@
 name: libcrails-tests
 version: 2.0.0 
 summary: tests helpers for the crails framework
-license: BSD-C3
+license: BSD-3-Clause
 description-file: README.md
 url: https://github.com/crails-framework/libcrails-tests
 email: michael@unetresgrossebite.com

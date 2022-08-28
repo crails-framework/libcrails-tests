@@ -1,5 +1,7 @@
 intf_libs = # Interface dependencies.
 impl_libs = # Implementation dependencies.
+import intf_libs += libcrails%lib{crails}
+import intf_libs += libcrails-action%lib{crails-action}
 
 lib{crails-tests}: {hxx ixx txx cxx}{**} $impl_libs $intf_libs
 
@@ -12,7 +14,7 @@ cxx.poptions =+  "-I$out_root" "-I$src_root"
 
 lib{crails-tests}:
 {
-  cxx.export.poptions = "-I$out_root" "-I$src_root"
+  cxx.export.poptions = "-I$out_root/libcrails-tests/" "-I$src_root/libcrails-tests/"
   cxx.export.libs = $intf_libs
 }
 
@@ -26,6 +28,6 @@ else
 
 {hxx ixx txx}{*}:
 {
-  install         = include/crails/tests
+  install         = include/
   install.subdirs = true
 }
