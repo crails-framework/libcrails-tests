@@ -14,7 +14,7 @@ Tests::Request::Request(boost::beast::http::verb method, const std::string& uri)
 
 void Tests::Request::run()
 {
-  const Router* router = Router::singleton::Get();
+  const Router* router = Router::singleton::get();
 
   if (router)
   {
