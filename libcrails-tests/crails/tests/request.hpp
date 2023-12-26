@@ -4,8 +4,8 @@
 # include <crails/router.hpp>
 # include <crails/params.hpp>
 
-# define EXPECT_STATUS(context, status) \
-  EXPECT(context.response.get_status_code(), ==, status)
+# define EXPECT_STATUS(request, status) \
+  EXPECT(static_cast<int>(request.response.result()), ==, static_cast<int>(status))
 
 namespace Crails
 {
