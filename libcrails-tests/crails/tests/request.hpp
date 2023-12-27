@@ -30,6 +30,8 @@ namespace Crails
 
       void run();
 
+      DataTree     params;
+      DataTree     session;
       HttpRequest  request;
       HttpResponse response;
     };
