@@ -25,6 +25,11 @@ namespace Crails
         const std::string message;
       };
 
+      struct NotHandled : public std::exception
+      {
+        const char* what() const throw() { return "Request not handled"; }
+      };
+
     public:
       Request(boost::beast::http::verb method, const std::string& uri);
 
