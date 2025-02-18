@@ -1,6 +1,6 @@
 #include "runner.hpp"
 #include <crails/logger.hpp>
-#include <crails/environment.hpp>
+#include <crails/server.hpp>
 #include <crails/utils/backtrace.hpp>
 
 using namespace std;
@@ -12,7 +12,7 @@ int main(int, char**)
   Runner runner;
   int    exit_status = 1;
 
-  Crails::environment = Crails::Test;
+  Server::set_environment(Test);
   try
   {
     runner.setup();
