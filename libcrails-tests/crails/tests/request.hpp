@@ -5,7 +5,7 @@
 # include <crails/params.hpp>
 
 # define EXPECT_STATUS(request, status) \
-  EXPECT(static_cast<int>(request.response.result()), ==, static_cast<int>(status))
+  EXPECT(request.response_status, ==, static_cast<unsigned int>(status))
 
 namespace Crails
 {
@@ -13,6 +13,7 @@ namespace Crails
   {
     class Request
     {
+    public:
       struct RouterNotInitialized : public std::exception
       {
         const char* what() const throw() { return "Router not initialized"; }
@@ -30,7 +31,6 @@ namespace Crails
         const char* what() const throw() { return "Request not handled"; }
       };
 
-    public:
       Request(boost::beast::http::verb method, const std::string& uri);
 
       void run();
@@ -38,6 +38,9 @@ namespace Crails
       DataTree     params;
       DataTree     session;
       HttpRequest  request;
+      unsigned int response_status;
+      std::string  response_body;
+    private:
       HttpResponse response;
     };
   }
