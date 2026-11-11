@@ -1,7 +1,6 @@
 #include "request.hpp"
 #include "helper.hpp"
 #include <crails/router.hpp>
-#define TEST_REQUEST_TIMEOUT chrono::seconds(30)
 
 using namespace std;
 using namespace Crails;
@@ -23,7 +22,7 @@ void Tests::Request::run()
     auto stub_connection = make_shared<Crails::Connection>(test_server, request);
     auto stub_request    = make_shared<Crails::Context>(test_server, *stub_connection);
     auto future_status   = stub_request->get_future();
-    auto deadline        = chrono::steady_clock::now() + TEST_REQUEST_TIMEOUT;
+    auto deadline        = chrono::steady_clock::now() + max_duration;
 
     stub_connection->set_muted(true);
     stub_request->params.as_data().merge(params);
@@ -33,6 +32,8 @@ void Tests::Request::run()
     session.as_data().destroy();
     session.as_data().merge(stub_request->params.get_session());
 
+    if (io_context.stopped())
+      io_context.restart();
     while (future_status.wait_for(chrono::milliseconds(50)) == future_status::timeout)
     {
       io_context.poll();

@@ -3,6 +3,7 @@
 
 # include <crails/router.hpp>
 # include <crails/params.hpp>
+# include <chrono>
 
 # define EXPECT_STATUS(request, status) \
   EXPECT(request.response_status, ==, static_cast<unsigned int>(status))
@@ -35,11 +36,12 @@ namespace Crails
 
       void run();
 
-      DataTree     params;
-      DataTree     session;
-      HttpRequest  request;
-      unsigned int response_status;
-      std::string  response_body;
+      DataTree             params;
+      DataTree             session;
+      HttpRequest          request;
+      std::chrono::seconds max_duration = std::chrono::seconds(5);
+      unsigned int         response_status;
+      std::string          response_body;
     private:
       HttpResponse response;
     };

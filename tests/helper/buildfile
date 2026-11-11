@@ -1,0 +1,3 @@
+import libs += libcrails-tests%lib{crails-tests}
+
+exe{driver}: {hxx ixx txx cxx}{**} $libs testscript{**}

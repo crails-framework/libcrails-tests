@@ -22,13 +22,55 @@ class TestController : public Crails::Controller
 {
 public:
   TestController(Crails::Context& context) : Crails::Controller(context)
-  {}
+  {
+  }
 
   boost::asio::awaitable<void> coroutine_path()
   {
     render(TEXT, std::string_view("Coucou Coroutine"));
-    cout << "Is this thing on? " << response.get_raw_response().body() << endl;
     co_return ;
+  }
+};
+
+struct TestHelper : public Crails::Tests::Helper
+{
+  TestHelper() : Helper("TestHelper")
+  {
+    describe("request tests", [this]()
+    {
+      it("normal coroutine", [this]()
+      {
+        Crails::Tests::Request test_request(boost::beast::http::verb::get, "/coroutine-path");
+
+        test_request.run();
+        assert(test_request.response_status == 200);
+        assert(test_request.response_body == "Coucou Coroutine");
+      });
+
+      it("normal coroutine bis", [this]()
+      {
+        Crails::Tests::Request test_request(boost::beast::http::verb::get, "/coroutine-path");
+
+        test_request.run();
+        assert(test_request.response_status == 200);
+        assert(test_request.response_body == "Coucou Coroutine");
+      });
+
+      it("normal 404", [this]()
+      {
+        Crails::Tests::Request not_found_test_request(boost::beast::http::verb::post, "/coroutine-path");
+        bool exception_caught = false;
+        try
+        {
+          not_found_test_request.run();
+        }
+        catch (const std::exception& err)
+        {
+          exception_caught = true;
+        }
+        assert(exception_caught);
+      });
+    });
   }
 };
 
@@ -72,6 +114,14 @@ int main()
       exception_caught = true;
     }
     assert(exception_caught);
+
+    // Helper test
+    {
+      TestHelper test_helper;
+
+      test_helper.run();
+      assert(test_helper.passed_count == 3);
+    }
   }
 
   return 0;
