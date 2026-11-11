@@ -30,6 +30,12 @@ public:
     render(TEXT, std::string_view("Coucou Coroutine"));
     co_return ;
   }
+
+  void session_path()
+  {
+    session["myvar"] = 42;
+    render(TEXT, std::string_view("Coucou Session"));
+  }
 };
 
 struct TestHelper : public Crails::Tests::Helper
@@ -93,6 +99,7 @@ int main()
     );
 
     router->match_action("GET", "/coroutine-path", TestController, coroutine_path);
+    router->match_action("GET", "/session-path", TestController, session_path);
 
     // Test normal coroutine request
     Crails::Tests::Request test_request(boost::beast::http::verb::get, "/coroutine-path");
@@ -114,6 +121,12 @@ int main()
       exception_caught = true;
     }
     assert(exception_caught);
+
+    // Test session
+    Crails::Tests::Request session_request(boost::beast::http::verb::get, "/session-path");
+    session_request.run();
+    assert(session_request.response_status == 200);
+    assert(session_request.session["myvar"].defaults_to<int>(0) == 42);
 
     // Helper test
     {

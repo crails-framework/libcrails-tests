@@ -29,9 +29,6 @@ void Tests::Request::run()
     stub_request->params.get_session().merge(session);
     stub_request->run();
 
-    session.as_data().destroy();
-    session.as_data().merge(stub_request->params.get_session());
-
     if (io_context.stopped())
       io_context.restart();
     while (future_status.wait_for(chrono::milliseconds(50)) == future_status::timeout)
@@ -44,6 +41,9 @@ void Tests::Request::run()
     response = stub_request->response.get_raw_response();
     response_body = response.body();
     response_status = response.result_int();
+
+    session.as_data().destroy();
+    session.as_data().merge(stub_request->params.get_session());
 
     if (stub_request->response.get_status_code() == HttpStatus::not_found)
     {
